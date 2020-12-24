@@ -11,16 +11,17 @@ using IdentityServer4.Stores;
 using IdentityServer4.WsFederation.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Protocols.WsFederation;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.Tokens.Saml;
-using Microsoft.IdentityModel.Tokens.Saml2;
 using System;
 using System.Collections.Generic;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens.Saml;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.WsFederation;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.IdentityModel.Tokens.Saml2;
 
 namespace IdentityServer4.WsFederation
 {
@@ -132,7 +133,7 @@ namespace IdentityServer4.WsFederation
             }
 
             // authentication instant claim is required
-            outboundClaims.Add(new Claim(ClaimTypes.AuthenticationInstant, XmlConvert.ToString(DateTime.UtcNow, "yyyy-MM-ddTHH:mm:ss.fffZ"), ClaimValueTypes.DateTime, Issuer));
+            outboundClaims.Add(new Claim(ClaimTypes.AuthenticationInstant, XmlConvert.ToString(result.User.GetAuthenticationTime(), "yyyy-MM-ddTHH:mm:ss.fffZ"), ClaimValueTypes.DateTime, Issuer));
 
             return new ClaimsIdentity(outboundClaims, "idsrv");
         }
